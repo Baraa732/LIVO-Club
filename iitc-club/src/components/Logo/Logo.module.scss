@@ -1,0 +1,62 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/animations';
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.markWrap {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mark {
+  display: block;
+  transition: filter 0.3s ease;
+
+  .logo:hover & {
+    filter: drop-shadow(0 0 10px rgba(0,230,255,.55));
+  }
+}
+
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: $text;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+.nameAccent {
+  @include gradientText;
+}
+
+.sub {
+  font-size: 0.6rem;
+  color: $text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+
+// ── Hero variant (large centered) ────────────────────────────
+.heroMark {
+  animation: float 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 28px rgba(0,230,255,.4));
+  display: block;
+}

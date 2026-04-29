@@ -1,0 +1,94 @@
+@use 'variables' as *;
+
+// ── Flex helpers ──────────────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// ── Glass card ────────────────────────────────────────────────
+@mixin glass-card($border: $border-cyan) {
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+// ── Glow border on hover ──────────────────────────────────────
+@mixin glow-hover($color: $primary) {
+  transition: $transition;
+  &:hover {
+    border-color: rgba($color, 0.35);
+    box-shadow: 0 0 24px rgba($color, 0.12), 0 8px 32px rgba(0,0,0,0.4);
+  }
+}
+
+// ── Gradient text ─────────────────────────────────────────────
+@mixin gradient-text($grad: $grad-primary) {
+  background: $grad;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// ── Scrollbar ─────────────────────────────────────────────────
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar { width: 4px; height: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: rgba(0,230,255,0.18); border-radius: 2px; }
+}
+
+// ── Input base ────────────────────────────────────────────────
+@mixin input-base {
+  width: 100%;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid $border-cyan;
+  border-radius: $radius-sm;
+  padding: 9px 13px;
+  font-size: 0.855rem;
+  color: $text;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Inter', sans-serif;
+
+  &:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba(0,230,255,0.08);
+  }
+
+  &::placeholder { color: $text-dim; }
+}
+
+// ── Button base ───────────────────────────────────────────────
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: $radius-sm;
+  font-size: 0.855rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: $transition;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+
+// ── Section header ────────────────────────────────────────────
+@mixin section-header {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $primary;
+  margin-bottom: 16px;
+}

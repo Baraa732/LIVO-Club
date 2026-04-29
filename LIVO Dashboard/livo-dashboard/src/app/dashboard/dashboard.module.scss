@@ -1,0 +1,17 @@
+@use '../../styles/variables' as *;
+@use '../../styles/animations';
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.main {
+  flex: 1;
+  margin-left: $sidebar-w;
+  padding: 40px 44px;
+  min-height: 100vh;
+  animation: fadeIn 0.35s ease both;
+}

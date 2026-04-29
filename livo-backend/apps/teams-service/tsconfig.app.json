@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/apps/teams-service",
+    "baseUrl": "../../",
+    "paths": {
+      "@livo/common": ["libs/common/src/index.ts"],
+      "@livo/common/*": ["libs/common/src/*"]
+    }
+  },
+  "include": ["src/**/*", "../../libs/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,83 @@
+@use 'variables' as *;
+
+@mixin glass {
+  backdrop-filter: blur(14px);
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+@mixin neonBorder {
+  border: 1px solid rgba(0,230,255,.16);
+  box-shadow: 0 0 18px rgba(0,230,255,.08);
+}
+
+@mixin neonBorderStrong {
+  border: 1px solid rgba(0,230,255,.35);
+  box-shadow: 0 0 30px rgba(0,230,255,.2);
+}
+
+@mixin cardBase {
+  background: $card;
+  border-radius: $radius-lg;
+  @include neonBorder;
+  transition: $transition;
+}
+
+@mixin hoverLift {
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: $shadow-glow;
+  }
+}
+
+@mixin gradientText {
+  background: $grad-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin container {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 40px;
+
+  @media (max-width: $bp-md) {
+    padding: 0 20px;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: $text;
+  line-height: 1.15;
+}
+
+@mixin badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(0,230,255,.08);
+  border: 1px solid rgba(0,230,255,.2);
+  color: $primary;
+}
+
+@mixin respond-to($bp) {
+  @if $bp == xl { @media (max-width: $bp-xl) { @content; } }
+  @else if $bp == lg { @media (max-width: $bp-lg) { @content; } }
+  @else if $bp == md { @media (max-width: $bp-md) { @content; } }
+  @else if $bp == sm { @media (max-width: $bp-sm) { @content; } }
+}

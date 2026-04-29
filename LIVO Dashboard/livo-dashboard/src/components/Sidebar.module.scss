@@ -1,0 +1,203 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+@use '../styles/animations';
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  width: $sidebar-w;
+  background: $bg-sidebar;
+  border-right: 1px solid $border-cyan;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  animation: fadeInLeft 0.4s ease both;
+
+  // Subtle inner glow on left edge
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0; right: -1px;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, rgba(0,230,255,0.4), rgba(0,230,255,0.15), transparent);
+    pointer-events: none;
+  }
+}
+
+// ── Brand ─────────────────────────────────────────────────────
+.brand {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid $border;
+  flex-shrink: 0;
+}
+
+.brandLogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.brandIcon {
+  @include flex-center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: $primary-dim;
+  border: 1px solid $border-cyan;
+  animation: glowPulse 3s ease infinite;
+
+  svg { color: $primary; }
+}
+
+.brandName {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  @include gradient-text;
+}
+
+.brandSub {
+  font-size: 0.68rem;
+  color: $text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding-left: 46px;
+}
+
+// ── Nav ───────────────────────────────────────────────────────
+.nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  @include custom-scrollbar;
+}
+
+.navLabel {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: $text-dim;
+  padding: 12px 10px 6px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: $radius-sm;
+  font-size: 0.855rem;
+  font-weight: 500;
+  color: $text-soft;
+  cursor: pointer;
+  transition: $transition;
+  position: relative;
+  border: 1px solid transparent;
+  text-decoration: none;
+
+  .navIcon {
+    @include flex-center;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: rgba(255,255,255,0.04);
+    flex-shrink: 0;
+    transition: $transition;
+  }
+
+  .navText { flex: 1; }
+
+  .navArrow {
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: $transition;
+    color: $primary;
+  }
+
+  &:hover {
+    color: $text;
+    background: rgba(255,255,255,0.04);
+    border-color: $border;
+
+    .navIcon { background: rgba(0,230,255,0.08); color: $primary; }
+    .navArrow { opacity: 0.6; transform: translateX(0); }
+  }
+
+  &.active {
+    color: $primary;
+    background: $primary-dim;
+    border-color: $border-cyan;
+
+    .navIcon { background: rgba(0,230,255,0.15); color: $primary; }
+    .navArrow { opacity: 1; transform: translateX(0); }
+
+    // Active left bar
+    &::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 60%;
+      background: $primary;
+      border-radius: 0 2px 2px 0;
+      box-shadow: 0 0 8px $primary;
+    }
+  }
+}
+
+// ── Footer ────────────────────────────────────────────────────
+.sidebarFooter {
+  padding: 16px 20px;
+  border-top: 1px solid $border;
+  flex-shrink: 0;
+}
+
+.statusDot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: $text-dim;
+  margin-bottom: 10px;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: $success;
+    box-shadow: 0 0 6px $success;
+    animation: dotBlink 2s ease infinite;
+    flex-shrink: 0;
+  }
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  border: 1px solid rgba(255, 77, 109, 0.2);
+  border-radius: $radius-sm;
+  color: $danger;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background: rgba(255, 77, 109, 0.08);
+    border-color: rgba(255, 77, 109, 0.4);
+  }
+}

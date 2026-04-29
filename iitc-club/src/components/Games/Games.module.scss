@@ -1,0 +1,384 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/animations';
+
+.section {
+  padding: $section-padding;
+  background: $bg-section;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,230,255,.2), transparent);
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.title {
+  @include section-title;
+  margin: 12px 0 14px;
+}
+
+.sub {
+  color: $text-soft;
+  font-size: 1rem;
+}
+
+.showcase {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+  align-items: stretch;
+
+  @include respond-to(lg) {
+    grid-template-columns: 1fr 320px;
+  }
+
+  @include respond-to(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.logoImg {
+  width: 30px !important;
+  height: 30px !important;
+  object-fit: contain;
+  display: block;
+  border-radius: 6px;
+}
+
+.panelLogo {
+  width: 100px !important;
+  height: 100px !important;
+  border-radius: 40%;
+  object-fit: contain;
+  display: block;
+}
+
+.panel {
+  @include cardBase;
+  position: relative;
+  overflow: hidden;
+  padding: 44px 44px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  animation: fadeUp 0.35s ease both;
+  border-color: rgba(var(--accent, 0,230,255), .18);
+
+  @include respond-to(sm) { padding: 28px 24px; }
+}
+
+.panelBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+
+.panelImg {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  border-radius: inherit;
+}
+
+.panelGlow {
+  position: absolute;
+  bottom: -80px;
+  right: -80px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+
+.panelAccentLine {
+  position: absolute;
+  top: 0; left: 0;
+  width: 120px;
+  height: 3px;
+  border-radius: 0 0 4px 0;
+  transition: background 0.4s ease;
+}
+
+.panelTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.panelCategory {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent, $primary);
+  background: rgba(0,230,255,.07);
+  border: 1px solid rgba(0,230,255,.15);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+
+.panelPlayers {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: $text-dim;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+}
+
+.panelEmoji {
+  width: 110px;
+  height: 110px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 24px rgba(0,0,0,.5));
+  user-select: none;
+}
+
+.panelName {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  color: $text;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.panelDesc {
+  font-size: 0.95rem;
+  color: $text-soft;
+  line-height: 1.75;
+  max-width: 520px;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.panelTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: $text-dim;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 4px 12px;
+  border-radius: 100px;
+  letter-spacing: 0.04em;
+}
+
+.panelStats {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.statVal {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent, $primary);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.7rem;
+  color: $text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.statDivider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255,255,255,.07);
+}
+
+.panelCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-radius: $radius-md;
+  background: rgba(var(--accent-rgb, 0,230,255), .1);
+  border: 1px solid rgba(0,230,255,.2);
+  color: var(--accent, $primary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  transition: $transition;
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+
+  &:hover {
+    background: rgba(0,230,255,.18);
+    box-shadow: 0 0 20px rgba(0,230,255,.2);
+    transform: translateX(4px);
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @include respond-to(md) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  @include respond-to(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.listItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: $radius-md;
+  background: $card;
+  border: 1px solid rgba(255,255,255,.05);
+  cursor: pointer;
+  transition: $transition;
+  overflow: hidden;
+  text-align: left;
+
+  &:hover {
+    border-color: rgba(0,230,255,.18);
+    background: rgba(255,255,255,.03);
+
+    .listBar { opacity: 1; width: 100%; }
+  }
+}
+
+.listItemActive {
+  background: rgba(0,230,255,.05);
+  border-color: var(--accent, rgba(0,230,255,.3)) !important;
+  box-shadow: 0 0 20px rgba(0,0,0,.3), inset 0 0 0 1px rgba(0,230,255,.06);
+
+  .listName { color: var(--accent, $primary); }
+  .listBar  { opacity: 1; width: 100%; background: linear-gradient(90deg, var(--accent, $primary), transparent); }
+}
+
+.listLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.listEmoji {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 1.5rem;
+}
+
+.listInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.listName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $text;
+  transition: $transition;
+  white-space: nowrap;
+}
+
+.listMeta {
+  font-size: 0.72rem;
+  color: $text-dim;
+}
+
+.listRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.listPlayers {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  color: $text-dim;
+}
+
+.listActiveIcon {
+  color: var(--accent, $primary);
+  animation: glowPulse 1.5s ease infinite;
+}
+
+.listBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  opacity: 0;
+  background: linear-gradient(90deg, $primary, transparent);
+  transition: width 0.4s ease, opacity 0.3s ease;
+  border-radius: 0 2px 0 0;
+}

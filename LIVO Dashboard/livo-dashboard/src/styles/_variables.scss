@@ -1,0 +1,40 @@
+// ── Colors ────────────────────────────────────────────────────
+$bg:           #050b16;
+$bg-card:      #090f1e;
+$bg-card2:     #0c1424;
+$bg-sidebar:   #060c1a;
+
+$primary:      #00e6ff;
+$primary-dim:  rgba(0, 230, 255, 0.12);
+$primary-glow: rgba(0, 230, 255, 0.35);
+
+$success:      #19e28f;
+$warning:      #ffb020;
+$danger:       #ff4d6d;
+$purple:       #7a3cff;
+
+$text:         #e8edf5;
+$text-soft:    #8b9ab5;
+$text-dim:     #4a5568;
+
+$border:       rgba(255, 255, 255, 0.06);
+$border-cyan:  rgba(0, 230, 255, 0.12);
+$border-hover: rgba(0, 230, 255, 0.28);
+
+// ── Gradients ─────────────────────────────────────────────────
+$grad-primary: linear-gradient(135deg, #00e6ff, #0066ff);
+$grad-card:    linear-gradient(135deg, rgba(0,230,255,0.06), rgba(0,102,255,0.04));
+$grad-danger:  linear-gradient(135deg, #ff4d6d, #ff6b35);
+
+// ── Spacing & Radius ──────────────────────────────────────────
+$radius-sm:  8px;
+$radius-md:  12px;
+$radius-lg:  16px;
+$radius-xl:  20px;
+
+// ── Transitions ───────────────────────────────────────────────
+$transition:      all 0.22s ease;
+$transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ── Sidebar ───────────────────────────────────────────────────
+$sidebar-w: 240px;

@@ -1,0 +1,101 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.section {
+  padding: $section-padding;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.title {
+  @include section-title;
+  margin: 12px 0 12px;
+}
+
+.sub {
+  color: $text-soft;
+  font-size: 0.95rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 200px;
+  gap: 16px;
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(sm) {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 160px;
+  }
+}
+
+.item {
+  position: relative;
+  border-radius: $radius-md;
+  overflow: hidden;
+  cursor: pointer;
+  @include neonBorder;
+  transition: $transition;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: $shadow-glow;
+  }
+}
+
+.large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.medium {
+  grid-column: span 2;
+}
+
+.small {
+  grid-column: span 1;
+}
+
+.imgPlaceholder {
+  width: 100%;
+  height: 100%;
+  @include flex-center;
+}
+
+.initial {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.06);
+  user-select: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,230,255,.08);
+  backdrop-filter: blur(4px);
+  @include flex-center;
+  flex-direction: column;
+  gap: 10px;
+  color: $primary;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: $transition;
+}
+
+.overlayVisible {
+  opacity: 1;
+}

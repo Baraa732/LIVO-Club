@@ -1,0 +1,82 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HeroModule = void 0;
+const common_1 = require("@nestjs/common");
+const microservices_1 = require("@nestjs/microservices");
+const common_2 = require("@livo/common");
+const common_3 = require("@nestjs/common");
+const microservices_2 = require("@nestjs/microservices");
+const swagger_1 = require("@nestjs/swagger");
+const common_4 = require("@livo/common");
+const base_gateway_1 = require("./base.gateway");
+const broker = process.env.KAFKA_BROKER || 'localhost:9092';
+let HeroGatewayService = class HeroGatewayService extends base_gateway_1.BaseGatewayService {
+    constructor(client) {
+        super();
+        this.client = client;
+    }
+    async onModuleInit() {
+        this.client.subscribeToResponseOf(common_2.KAFKA_TOPICS.HERO_GET);
+        this.client.subscribeToResponseOf(common_2.KAFKA_TOPICS.HERO_UPDATE);
+        await this.client.connect();
+    }
+    getHero() { return this.send(this.client, common_2.KAFKA_TOPICS.HERO_GET, {}); }
+    updateHero(dto) { return this.send(this.client, common_2.KAFKA_TOPICS.HERO_UPDATE, dto); }
+};
+HeroGatewayService = __decorate([
+    (0, common_3.Injectable)(),
+    __param(0, (0, common_3.Inject)(common_2.SERVICES.HERO)),
+    __metadata("design:paramtypes", [microservices_2.ClientKafka])
+], HeroGatewayService);
+let HeroController = class HeroController {
+    constructor(svc) {
+        this.svc = svc;
+    }
+    getHero() { return this.svc.getHero(); }
+    updateHero(dto) { return this.svc.updateHero(dto); }
+};
+__decorate([
+    (0, common_4.Public)(),
+    (0, common_3.Get)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Get hero section data' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], HeroController.prototype, "getHero", null);
+__decorate([
+    (0, common_3.Put)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Update hero section (admin)' }),
+    __param(0, (0, common_3.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [common_4.UpdateHeroDto]),
+    __metadata("design:returntype", void 0)
+], HeroController.prototype, "updateHero", null);
+HeroController = __decorate([
+    (0, swagger_1.ApiTags)('Hero'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_3.Controller)('hero'),
+    __metadata("design:paramtypes", [HeroGatewayService])
+], HeroController);
+let HeroModule = class HeroModule {
+};
+exports.HeroModule = HeroModule;
+exports.HeroModule = HeroModule = __decorate([
+    (0, common_1.Module)({
+        imports: [microservices_1.ClientsModule.register([{ name: common_2.SERVICES.HERO, transport: microservices_1.Transport.KAFKA, options: { client: { clientId: 'gateway-hero', brokers: [broker] }, consumer: { groupId: 'gateway-hero-group' } } }])],
+        controllers: [HeroController],
+        providers: [HeroGatewayService],
+    })
+], HeroModule);
+//# sourceMappingURL=hero.module.js.map

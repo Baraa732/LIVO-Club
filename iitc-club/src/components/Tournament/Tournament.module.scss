@@ -1,0 +1,476 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/animations';
+
+// ─────────────────────────────────────────
+// Section shell
+// ─────────────────────────────────────────
+.section {
+  padding: $section-padding;
+  background: $bg-section;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,230,255,.22), transparent);
+  }
+}
+
+// ─────────────────────────────────────────
+// Header
+// ─────────────────────────────────────────
+.header {
+  margin-bottom: 40px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.titleBlock {}
+
+.title {
+  @include section-title;
+  margin: 10px 0 6px;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: $text-dim;
+  letter-spacing: 0.06em;
+}
+
+.liveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: $danger;
+  display: inline-block;
+  animation: glowPulse 1.5s ease infinite;
+  box-shadow: 0 0 8px $danger;
+}
+
+// Meta cards row
+.metaCards {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.metaCard {
+  @include cardBase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 20px;
+  min-width: 100px;
+  text-align: center;
+  transition: $transition;
+
+  &:hover {
+    border-color: rgba(0,230,255,.28);
+    transform: translateY(-2px);
+  }
+}
+
+.metaIcon {
+  color: $primary;
+  margin-bottom: 2px;
+}
+
+.metaLabel {
+  font-size: 0.68rem;
+  color: $text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.metaValue {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  @include gradientText;
+  white-space: nowrap;
+}
+
+// ─────────────────────────────────────────
+// Tab bar
+// ─────────────────────────────────────────
+.tabBar {
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: $radius-md;
+  padding: 5px;
+  width: fit-content;
+  overflow-x: auto;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: $radius-sm;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: $text-dim;
+  transition: $transition;
+  white-space: nowrap;
+
+  &:hover { color: $text; background: rgba(255,255,255,.04); }
+}
+
+.activeTab {
+  background: rgba(0,230,255,.1);
+  color: $primary;
+  border: 1px solid rgba(0,230,255,.2);
+}
+
+// ─────────────────────────────────────────
+// Content wrapper
+// ─────────────────────────────────────────
+.content {
+  animation: fadeUp 0.4s ease both;
+}
+
+// ─────────────────────────────────────────
+// Bracket
+// ─────────────────────────────────────────
+.bracket {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  position: relative;
+
+  // vertical separator lines between columns
+  & > * + * {
+    border-left: 1px solid rgba(0,230,255,.07);
+    padding-left: 24px;
+  }
+
+  & > *:not(:last-child) {
+    padding-right: 24px;
+  }
+
+  @include respond-to(md) {
+    grid-template-columns: 1fr;
+
+    & > * + * {
+      border-left: none;
+      border-top: 1px solid rgba(0,230,255,.07);
+      padding-left: 0;
+      padding-top: 24px;
+    }
+
+    & > *:not(:last-child) {
+      padding-right: 0;
+      padding-bottom: 24px;
+    }
+  }
+}
+
+.bracketCol {}
+
+.roundHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.roundLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $primary;
+}
+
+.roundCount {
+  font-size: 0.7rem;
+  color: $text-dim;
+}
+
+.matchList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+// ─────────────────────────────────────────
+// Match card
+// ─────────────────────────────────────────
+.matchCard {
+  @include cardBase;
+  overflow: hidden;
+  transition: $transition;
+
+  &:hover { border-color: rgba(0,230,255,.28); }
+}
+
+// status variants
+.match_done     { border-color: rgba(0,230,255,.14); }
+.match_live     { border-color: rgba(255,77,109,.35); box-shadow: 0 0 18px rgba(255,77,109,.1); }
+.match_upcoming { border-color: rgba(255,255,255,.06); }
+
+.liveBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: rgba(255,77,109,.1);
+  border-bottom: 1px solid rgba(255,77,109,.2);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: $danger;
+  animation: glowPulse 1.5s ease infinite;
+}
+
+.timeBar {
+  padding: 5px 14px;
+  background: rgba(255,255,255,.02);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  font-size: 0.68rem;
+  color: $text-dim;
+  letter-spacing: 0.06em;
+}
+
+.teamRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  transition: $transition;
+}
+
+.teamInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.teamAvatar {
+  @include flex-center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(0,230,255,.07);
+  border: 1px solid rgba(0,230,255,.14);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $primary;
+  flex-shrink: 0;
+}
+
+.teamName {
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: $text-soft;
+}
+
+.teamScore {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: $text-dim;
+  min-width: 20px;
+  text-align: right;
+}
+
+.teamWinner {
+  background: rgba(0,230,255,.05);
+
+  .teamName  { color: $primary; font-weight: 700; }
+  .teamScore { color: $primary; }
+  .teamAvatar { border-color: rgba(0,230,255,.35); background: rgba(0,230,255,.12); }
+}
+
+.teamLoser {
+  opacity: 0.5;
+}
+
+.matchDivider {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-top: 1px solid rgba(255,255,255,.04);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+
+  span {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: $text-dim;
+    background: rgba(255,255,255,.02);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+}
+
+// ─────────────────────────────────────────
+// Standings
+// ─────────────────────────────────────────
+.standingsWrap {
+  @include cardBase;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.standingsTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+
+  thead tr {
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+
+  th {
+    padding: 14px 18px;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: $text-dim;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    transition: $transition;
+
+    &:last-child { border-bottom: none; }
+    &:hover { background: rgba(0,230,255,.03); }
+  }
+
+  td {
+    padding: 12px 18px;
+    font-size: 0.875rem;
+    color: $text-soft;
+  }
+}
+
+.topRow { background: rgba(0,230,255,.03) !important; }
+
+.topRank {
+  display: flex;
+  align-items: center;
+  color: $warning;
+}
+
+.rankNum {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: $text-dim;
+}
+
+.standingTeam {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: $text;
+}
+
+.numCell  { font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 600; }
+.winCell  { font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; color: $success !important; }
+.lossCell { font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; color: $danger  !important; }
+
+.ptsValue {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  @include gradientText;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px solid;
+}
+
+.status_qualified  { color: $success; background: rgba(25,226,143,.1);  border-color: rgba(25,226,143,.25);  }
+.status_eliminated { color: $danger;  background: rgba(255,77,109,.1);  border-color: rgba(255,77,109,.25);  }
+.status_pending    { color: $primary; background: rgba(0,230,255,.08);  border-color: rgba(0,230,255,.2);    }
+
+// ─────────────────────────────────────────
+// Rules
+// ─────────────────────────────────────────
+.rulesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+
+  @include respond-to(lg) { grid-template-columns: repeat(2, 1fr); }
+  @include respond-to(sm) { grid-template-columns: 1fr; }
+}
+
+.ruleCard {
+  @include cardBase;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: $transition;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0,230,255,.28);
+  }
+}
+
+.ruleNum {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(0,230,255,.06);
+  line-height: 1;
+  user-select: none;
+}
+
+.ruleIcon {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(0,230,255,.08);
+  border: 1px solid rgba(0,230,255,.15);
+  color: $primary;
+  margin-bottom: 14px;
+}
+
+.ruleTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: $text;
+  margin-bottom: 8px;
+}
+
+.ruleDesc {
+  font-size: 0.82rem;
+  color: $text-soft;
+  line-height: 1.65;
+}

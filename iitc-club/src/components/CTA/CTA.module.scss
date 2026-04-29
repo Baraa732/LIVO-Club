@@ -1,0 +1,170 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/animations';
+
+.section {
+  padding: $section-padding;
+  position: relative;
+  overflow: hidden;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 50%, rgba(0,230,255,.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+
+  @include respond-to(lg) {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+}
+
+.content {}
+
+.title {
+  @include section-title;
+  margin: 12px 0 20px;
+}
+
+.desc {
+  color: $text-soft;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+
+.perks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.perk {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: $text-soft;
+}
+
+.check {
+  color: $success;
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: $radius-md;
+  background: $grad-primary;
+  color: #050B16;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: $transition;
+
+  &:hover {
+    box-shadow: 0 0 30px rgba(0,230,255,.45);
+    transform: translateY(-2px);
+  }
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 24px;
+  border-radius: $radius-md;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1);
+  color: $text;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: $transition;
+
+  &:hover {
+    border-color: rgba(0,230,255,.25);
+    background: rgba(0,230,255,.05);
+  }
+}
+
+// Visual
+.visual {
+  position: relative;
+  height: 400px;
+  @include flex-center;
+
+  @include respond-to(lg) { height: 300px; }
+}
+
+.glowBg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(0,230,255,.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.card1, .card2, .card3 {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: $radius-md;
+  @include glass;
+  @include neonBorder;
+  min-width: 220px;
+}
+
+.card1 {
+  top: 10%;
+  right: 0;
+  animation: float 3.5s ease-in-out infinite;
+}
+
+.card2 {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  animation: float 4s ease-in-out infinite 0.5s;
+}
+
+.card3 {
+  bottom: 10%;
+  right: 10%;
+  animation: float 3s ease-in-out infinite 1s;
+}
+
+.cardIcon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $text;
+  margin-bottom: 2px;
+}
+
+.cardSub {
+  font-size: 0.75rem;
+  color: $text-dim;
+}

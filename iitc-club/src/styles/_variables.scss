@@ -1,0 +1,49 @@
+// Colors
+$bg-main: #050B16;
+$bg-section: #07111F;
+$card: #0A1626;
+$card-2: #0E1B2D;
+$border: rgba(72, 214, 255, 0.18);
+$text: #F4F8FF;
+$text-soft: #A8B6C9;
+$text-dim: #6F8198;
+$primary: #00E6FF;
+$primary-2: #00C2FF;
+$teal: #00FFD5;
+$blue-glow: #2F7BFF;
+$purple-line: #7A3CFF;
+$success: #19E28F;
+$warning: #FFB020;
+$danger: #FF4D6D;
+
+// Gradients
+$grad-primary: linear-gradient(135deg, #00FFD5 0%, #00B8FF 55%, #246BFF 100%);
+$grad-dark: linear-gradient(180deg, #07111F 0%, #050B16 100%);
+$grad-card: linear-gradient(145deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+
+// Spacing
+$max-width: 1440px;
+$section-padding: 100px 0;
+$section-padding-md: 70px 0;
+$section-padding-sm: 50px 0;
+
+// Border Radius
+$radius-sm: 12px;
+$radius-md: 18px;
+$radius-lg: 24px;
+$radius-xl: 32px;
+
+// Transitions
+$transition: all 0.35s ease;
+$transition-fast: all 0.2s ease;
+
+// Shadows
+$shadow-card: 0 0 0 1px rgba(0,230,255,.08), 0 12px 30px rgba(0,0,0,.45);
+$shadow-glow: 0 0 30px rgba(0,230,255,.18);
+$shadow-glow-strong: 0 0 60px rgba(0,230,255,.3);
+
+// Breakpoints
+$bp-xl: 1440px;
+$bp-lg: 1024px;
+$bp-md: 768px;
+$bp-sm: 480px;

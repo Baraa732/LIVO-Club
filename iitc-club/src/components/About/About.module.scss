@@ -1,0 +1,113 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.section {
+  padding: $section-padding;
+  position: relative;
+  overflow: hidden;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 80% 50%, rgba(0,230,255,.04) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 50%, rgba(122,60,255,.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+
+  @include respond-to(lg) {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+}
+
+.left {}
+
+.title {
+  @include section-title;
+  margin: 12px 0 20px;
+}
+
+.desc {
+  color: $text-soft;
+  line-height: 1.75;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.divider {
+  width: 60px;
+  height: 2px;
+  background: $grad-primary;
+  border-radius: 2px;
+  margin: 28px 0;
+}
+
+.founded {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.foundedYear {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  @include gradientText;
+  line-height: 1;
+}
+
+.foundedLabel {
+  font-size: 0.85rem;
+  color: $text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  @include respond-to(sm) { grid-template-columns: 1fr; }
+}
+
+.pillar {
+  @include cardBase;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  @include hoverLift;
+}
+
+.pillarIcon {
+  @include flex-center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(0,230,255,.08);
+  border: 1px solid rgba(0,230,255,.15);
+  color: $primary;
+  flex-shrink: 0;
+}
+
+.pillarTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $text;
+  margin-bottom: 6px;
+}
+
+.pillarDesc {
+  font-size: 0.82rem;
+  color: $text-soft;
+  line-height: 1.6;
+}

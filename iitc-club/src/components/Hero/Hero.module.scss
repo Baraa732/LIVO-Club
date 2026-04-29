@@ -1,0 +1,421 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/animations';
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 120px 0 80px;
+
+  @include respond-to(md) {
+    padding: 100px 0 60px;
+  }
+
+  @include respond-to(sm) {
+    padding: 90px 0 50px;
+  }
+}
+
+.bgEffects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bgOrb1 {
+  position: absolute;
+  top: -200px;
+  right: -100px;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,230,255,.07) 0%, transparent 70%);
+}
+
+.bgOrb2 {
+  position: absolute;
+  bottom: -150px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(122,60,255,.06) 0%, transparent 70%);
+}
+
+.bgGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,230,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,230,255,.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+
+  @include respond-to(lg) {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  @include respond-to(md) {
+    gap: 32px;
+  }
+
+  @include respond-to(sm) {
+    gap: 24px;
+  }
+}
+
+.content {
+  animation: fadeUp 0.8s ease both;
+}
+
+.liveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: $success;
+  display: inline-block;
+  animation: glowPulse 1.5s ease infinite;
+  box-shadow: 0 0 8px $success;
+}
+
+.title {
+  margin: 20px 0 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.line {
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 700;
+  color: $text;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.gradLine {
+  @include gradientText;
+}
+
+.desc {
+  font-size: 1.05rem;
+  color: $text-soft;
+  max-width: 480px;
+  line-height: 1.7;
+  margin-bottom: 36px;
+
+  @include respond-to(sm) {
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+
+  @include respond-to(sm) {
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: $radius-md;
+  background: $grad-primary;
+  color: #050B16;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  transition: $transition;
+
+  &:hover {
+    box-shadow: 0 0 30px rgba(0,230,255,.45);
+    transform: translateY(-2px);
+  }
+}
+
+.btnVideo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  border-radius: $radius-md;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1);
+  color: $text;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: $transition;
+
+  &:hover {
+    border-color: rgba(0,230,255,.25);
+    background: rgba(0,230,255,.05);
+  }
+}
+
+.playIcon {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $grad-primary;
+  color: #050B16;
+  flex-shrink: 0;
+}
+
+.stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+
+  @include respond-to(sm) {
+    gap: 20px;
+  }
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: counterUp 0.6s ease both;
+}
+
+.statIcon {
+  color: $primary;
+  margin-bottom: 2px;
+}
+
+.statNum {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  @include gradientText;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.8rem;
+  color: $text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+// Visual Side
+.visual {
+  position: relative;
+  @include flex-center;
+  height: 520px;
+  animation: fadeIn 1s ease 0.3s both;
+
+  @include respond-to(lg) {
+    height: 420px;
+    width: 100%;
+  }
+
+  @include respond-to(md) {
+    height: 360px;
+  }
+
+  @include respond-to(sm) {
+    height: 280px;
+  }
+}
+
+.orbitRing1, .orbitRing2, .orbitRing3 {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0,230,255,.12);
+}
+
+.orbitRing1 {
+  width: 320px;
+  height: 320px;
+  animation: rotate 20s linear infinite;
+  border-style: dashed;
+
+  @include respond-to(md) { width: 240px; height: 240px; }
+  @include respond-to(sm) { width: 180px; height: 180px; }
+}
+
+.orbitRing2 {
+  width: 420px;
+  height: 420px;
+  animation: rotateReverse 30s linear infinite;
+  border-color: rgba(0,230,255,.07);
+
+  @include respond-to(md) { width: 320px; height: 320px; }
+  @include respond-to(sm) { width: 240px; height: 240px; }
+}
+
+.orbitRing3 {
+  width: 500px;
+  height: 500px;
+  animation: rotate 45s linear infinite;
+  border-color: rgba(122,60,255,.06);
+
+  @include respond-to(md) { width: 380px; height: 380px; }
+  @include respond-to(sm) { width: 290px; height: 290px; }
+}
+
+.orbitDot1, .orbitDot2, .orbitDot3 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $primary;
+  box-shadow: 0 0 12px $primary;
+}
+
+.orbitDot1 {
+  top: calc(50% - 160px);
+  left: 50%;
+  animation: orbitSpin 20s linear infinite;
+  transform-origin: 0 160px;
+}
+
+.orbitDot2 {
+  top: calc(50% - 210px);
+  left: 50%;
+  animation: orbitSpin 30s linear infinite reverse;
+  transform-origin: 0 210px;
+  background: $teal;
+  box-shadow: 0 0 12px $teal;
+}
+
+.orbitDot3 {
+  top: calc(50% - 250px);
+  left: 50%;
+  animation: orbitSpin 45s linear infinite;
+  transform-origin: 0 250px;
+  background: $purple-line;
+  box-shadow: 0 0 12px $purple-line;
+}
+
+.modelWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.logoWrap {
+  position: relative;
+  z-index: 2;
+  animation: float 4s ease-in-out infinite;
+}
+
+.logoGlow {
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,230,255,.22) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.logoImg {
+  display: block;
+  border-radius: 28px;
+  border: 1px solid rgba(0,230,255,.22);
+  background: rgba(0,230,255,.04);
+  padding: 6px;
+  filter: drop-shadow(0 0 28px rgba(0,230,255,.45));
+  position: relative;
+  z-index: 1;
+}
+
+.floatCard1, .floatCard2 {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: $radius-md;
+  @include glass;
+  @include neonBorder;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $text-soft;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.floatCard1 {
+  top: 15%;
+  right: 0;
+  animation: float 3s ease-in-out infinite;
+  color: $primary;
+
+  @include respond-to(sm) {
+    top: 5%;
+    right: 0;
+    font-size: 0.7rem;
+    padding: 7px 10px;
+  }
+}
+
+.floatCard2 {
+  bottom: 20%;
+  left: 0;
+  animation: float 3.5s ease-in-out infinite 0.5s;
+
+  @include respond-to(sm) {
+    bottom: 5%;
+    left: 0;
+    font-size: 0.7rem;
+    padding: 7px 10px;
+  }
+}
+
+.liveTag {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255,77,109,.15);
+  border: 1px solid rgba(255,77,109,.3);
+  color: $danger;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  animation: blink 1.5s ease infinite;
+}
+
+.scrollHint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: $text-dim;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, $primary, transparent);
+  animation: float 2s ease-in-out infinite;
+}
