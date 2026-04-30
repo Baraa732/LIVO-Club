@@ -100,6 +100,7 @@ function Model() {
   const { scene } = useGLTF('/models/LIVO.glb')
   const groupRef = useRef<THREE.Group>(null)
   const { camera } = useThree()
+  const timeRef = useRef(0)
 
   const gradientMaterial = useMemo(() => new LivoGradientMaterial(), []);
 
@@ -138,6 +139,15 @@ function Model() {
     camera.updateProjectionMatrix()
   }, [scene, camera])
 
+  // Float up/down + gentle left/right sway
+  useFrame((_, delta) => {
+    if (!groupRef.current) return
+    timeRef.current += delta
+    const t = timeRef.current
+    groupRef.current.position.y += Math.sin(t * 0.8) * 0.003
+    groupRef.current.rotation.y = Math.sin(t * 0.5) * 0.18
+  })
+
   return <primitive ref={groupRef} object={scene} />
 }
 
@@ -155,12 +165,19 @@ export default function LivoModel() {
         width: '100%', height: '100%', position: 'absolute', inset: 0,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
+        <style>{`
+          @keyframes livoFloat {
+            0%   { transform: translateY(0px)   rotate(-2deg);   }
+            25%  { transform: translateY(-14px) rotate(2deg);    }
+            50%  { transform: translateY(-20px) rotate(-1.5deg); }
+            75%  { transform: translateY(-10px) rotate(2.5deg);  }
+            100% { transform: translateY(0px)   rotate(-2deg);   }
+          }
+        `}</style>
         <div style={{
           fontFamily: 'var(--font-rajdhani), sans-serif',
           fontSize: 'clamp(4.5rem, 22vw, 7rem)',
           fontWeight: 700,
-          // نفس توزيع ألوان الـ shader: L=بنفسجي، I=أزرق فاتح، V=تيل، O=برتقالي
-          // background goes left→right across all 4 chars equally
           background: 'linear-gradient(120deg, #8689e6 0%, #a2d1ff 30%, #5efbcc 45%, #eb9779 77%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
@@ -169,8 +186,8 @@ export default function LivoModel() {
           letterSpacing: '0.18em',
           userSelect: 'none',
           filter: 'drop-shadow(0 0 28px rgba(94,251,204,0.4))',
-          // padding-right to compensate for letter-spacing on last char
           paddingRight: '0.18em',
+          animation: 'livoFloat 4s ease-in-out infinite',
         }}>
           LIVO
         </div>
