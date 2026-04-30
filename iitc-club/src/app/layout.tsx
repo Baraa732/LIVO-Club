@@ -33,13 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${rajdhani.variable}`}>
       <head>
-        {/* Preload LCP image — discovered early before JS hydration */}
-        <link
-          rel="preload"
-          as="image"
-          href="/images/games-opt/Counter-Strike 2.jpg"
-          fetchPriority="high"
-        />
+        {/* Preload GLB model so browser fetches it in parallel with JS bundles */}
+        <link rel="preload" as="fetch" href="/models/LIVO.glb" crossOrigin="anonymous" />
       </head>
       <body>{children}</body>
     </html>

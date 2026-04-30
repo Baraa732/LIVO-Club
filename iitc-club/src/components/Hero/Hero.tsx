@@ -1,11 +1,9 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { Play, ChevronRight, Users, Trophy, Gamepad2 } from 'lucide-react'
 import styles from './Hero.module.scss'
-
-const LivoModel = dynamic(() => import('./LivoModel'), { ssr: false })
+import LivoModel from './LivoModel'
 
 const stats = [
   { value: 7, suffix: '+', label: 'Games', icon: Gamepad2 },
@@ -38,6 +36,9 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
 }
 
 export default function Hero() {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
   return (
     <section className={styles.hero} id="home">
       <div className={styles.bgEffects}>
@@ -96,7 +97,7 @@ export default function Hero() {
           <div className={styles.orbitDot3} />
 
           <div className={styles.modelWrap}>
-            <LivoModel />
+            {mounted && <LivoModel />}
           </div>
 
           <div className={styles.floatCard1}>
