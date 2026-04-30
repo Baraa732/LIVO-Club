@@ -2,8 +2,6 @@
 @use '../styles/mixins' as *;
 @use '../styles/animations';
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap');
-
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -20,14 +18,14 @@ html {
 body {
   background: $bg-main;
   color: $text;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
   line-height: 1.2;
 }
 
@@ -94,4 +92,16 @@ ul, ol {
 // Offset all anchor sections by header height so fixed header never covers content
 section[id] {
   scroll-margin-top: 80px;
+}
+
+// Respect user's motion preference
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }

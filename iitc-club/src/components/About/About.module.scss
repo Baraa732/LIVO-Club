@@ -5,6 +5,7 @@
   padding: $section-padding;
   position: relative;
   overflow: hidden;
+  @include offscreen-section;
 }
 
 .bg {
@@ -57,7 +58,7 @@
 }
 
 .foundedYear {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 3rem;
   font-weight: 700;
   @include gradientText;

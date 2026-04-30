@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useGLTF, Environment } from '@react-three/drei'
 import * as THREE from 'three'
 
-/* ── Radar Grid (لم يتم تعديله) ────────────────────────────── */
+/* ── Radar Grid ────────────────────────────── */
 function RadarGrid() {
   const ref = useRef<THREE.Group>(null)
 
@@ -42,28 +42,25 @@ function RadarGrid() {
   return (
     <group ref={ref} rotation={[-Math.PI / 2, 0, 0]} position={[0, -2.2, 0]}>
       {rings.map((geo, i) => <mesh key={i} geometry={geo} material={mat} />)}
-      {lines.map((geo, i) => <line key={i} geometry={geo} material={lineMat} />)}
+      {lines.map((geo, i) => {
+        const lineObj = new THREE.Line(geo, lineMat)
+        return <primitive key={i} object={lineObj} />
+      })}
     </group>
   )
 }
 
-/* ── 1. تعريف مادة التدرج اللوني المخصصة (Shader) ── */
-// هذه المادة تحسب لون كل بكسل بناءً على موقعه الأفقي (X)
 class LivoGradientMaterial extends THREE.ShaderMaterial {
   constructor() {
     super({
-      // الـ Uniforms هي متغيرات نرسلها من الـ JavaScript إلى الـ Shader
       uniforms: {
-        // نحدد حدود الكلمة لضبط التدرج عليها بدقة
-        uMinX: { value: -2.0 }, 
+        uMinX: { value: -2.0 },
         uMaxX: { value: 2.0 },
-        // الألوان المأخوذة من الصورة (من اليسار إلى اليمين)
-        colorL: { value: new THREE.Color("#8689e6") }, // أزرق غامق
-        colorI: { value: new THREE.Color("#a2d1ff") }, // أزرق فاتح
-        colorV: { value: new THREE.Color("#5efbcc") }, // فيروزي/أخضر
-        colorO: { value: new THREE.Color("#eb9779") }, // برتقالي
+        colorL: { value: new THREE.Color("#8689e6") },
+        colorI: { value: new THREE.Color("#a2d1ff") },
+        colorV: { value: new THREE.Color("#5efbcc") },
+        colorO: { value: new THREE.Color("#eb9779") },
       },
-      // Vertex Shader: يحدد موقع كل نقطة ويمرر إحداثيات الموقع العالمي إلى الـ Fragment Shader
       vertexShader: `
         varying vec3 vWorldPosition;
         void main() {
@@ -72,7 +69,6 @@ class LivoGradientMaterial extends THREE.ShaderMaterial {
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
-      // Fragment Shader: يحسب اللون النهائي لكل بكسل
       fragmentShader: `
         varying vec3 vWorldPosition;
         uniform float uMinX;
@@ -83,27 +79,16 @@ class LivoGradientMaterial extends THREE.ShaderMaterial {
         uniform vec3 colorO;
 
         void main() {
-          // 1. تحويل موقع X العالمي إلى نسبة بين 0.0 و 1.0 عبر الكلمة
           float normX = clamp((vWorldPosition.x - uMinX) / (uMaxX - uMinX), 0.0, 1.0);
-          
           vec3 finalColor;
-          
-          // 2. تقسيم المجال (0-1) إلى 3 مناطق للدمج بين الـ 4 ألوان
           if (normX < 0.33) {
-            // بين الأزرق الغامق والفاتح (L و I)
             finalColor = mix(colorL, colorI, normX / 0.33);
           } else if (normX < 0.66) {
-            // بين الأزرق الفاتح والفيروزي (I و V)
             finalColor = mix(colorI, colorV, (normX - 0.33) / 0.33);
           } else {
-            // بين الفيروزي والبرتقالي (V و O)
             finalColor = mix(colorV, colorO, (normX - 0.66) / 0.34);
           }
-          
-          // إضافة القليل من الإضاءة الأساسية لجعلها تبدو ثلاثية الأبعاد
-          // (الـ ShaderMaterial الأساسي لا يتفاعل مع أضواء المشهد تلقائيًا)
-          finalColor += 0.15; // Ambient simple
-          
+          finalColor += 0.15;
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
@@ -111,58 +96,42 @@ class LivoGradientMaterial extends THREE.ShaderMaterial {
   }
 }
 
-/* ── LIVO Model (تم تعديل منطق الألوان) ───────────────────────── */
 function Model() {
   const { scene } = useGLTF('/models/LIVO.glb')
   const groupRef = useRef<THREE.Group>(null)
   const { camera } = useThree()
 
-  // ── 2. إنشاء المادة وتطبيقها ──
   const gradientMaterial = useMemo(() => new LivoGradientMaterial(), []);
 
   useEffect(() => {
-    // نحتاج أولاً لحساب حدود المجسم (Bounding Box) لتحديد uMinX و uMaxX بدقة
     const box = new THREE.Box3().setFromObject(scene);
-    
-    // تحديث قيم الـ Shader uniforms بناءً على حجم المجسم الحقيقي
     if (gradientMaterial.uniforms) {
       gradientMaterial.uniforms.uMinX.value = box.min.x;
       gradientMaterial.uniforms.uMaxX.value = box.max.x;
     }
-
-    // تطبيق المادة الجديدة على جميع الأجزاء
     scene.traverse((obj) => {
       if ((obj as THREE.Mesh).isMesh) {
         const mesh = obj as THREE.Mesh;
-        // استبدال المادة القديمة بـ ShaderMaterial المخصص
         mesh.material = gradientMaterial;
         mesh.castShadow = true;
       }
     });
-
-    console.log('[LIVO Shader Applied]');
   }, [scene, gradientMaterial]);
 
-  // ── DO NOT TOUCH camera/position numbers (كما طلبت) ──
   useEffect(() => {
     if (!groupRef.current) return
-
     groupRef.current.rotation.x = 0
     groupRef.current.rotation.z = 0.3
-
     const box = new THREE.Box3().setFromObject(groupRef.current)
     const size = new THREE.Vector3()
     const center = new THREE.Vector3()
     box.getSize(size)
     box.getCenter(center)
-
     groupRef.current.position.set(-center.x, -center.y, -center.z)
-
     const fov = (camera as THREE.PerspectiveCamera).fov * (Math.PI / 150)
     const fitHeightDistance = size.y / (2 * Math.tan(fov / 2))
     const fitWidthDistance = size.x / (2 * Math.tan(fov / 2) * (camera as THREE.PerspectiveCamera).aspect)
     const dist = Math.max(fitHeightDistance, fitWidthDistance) * 1.5
-
     const angle = 1.5
     camera.position.set(0, Math.sin(angle) * dist, Math.cos(angle) * dist)
     camera.lookAt(0, 0, 0)
@@ -172,17 +141,58 @@ function Model() {
   return <primitive ref={groupRef} object={scene} />
 }
 
-/* ── Canvas (لم يتم تعديله) ─────────────────────────────────── */
 export default function LivoModel() {
+  // Detect low-end / mobile devices and skip WebGL entirely
+  const isLowEnd = typeof window !== 'undefined' && (
+    /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 4) ||
+    window.innerWidth < 768
+  )
+
+  if (isLowEnd) {
+    return (
+      <div style={{
+        width: '100%', height: '100%', position: 'absolute', inset: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <div style={{
+          fontFamily: 'var(--font-rajdhani), sans-serif',
+          fontSize: 'clamp(4.5rem, 22vw, 7rem)',
+          fontWeight: 700,
+          // نفس توزيع ألوان الـ shader: L=بنفسجي، I=أزرق فاتح، V=تيل، O=برتقالي
+          // background goes left→right across all 4 chars equally
+          background: 'linear-gradient(120deg, #8689e6 0%, #a2d1ff 30%, #5efbcc 45%, #eb9779 77%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          backgroundSize: '100% 100%',
+          letterSpacing: '0.18em',
+          userSelect: 'none',
+          filter: 'drop-shadow(0 0 28px rgba(94,251,204,0.4))',
+          // padding-right to compensate for letter-spacing on last char
+          paddingRight: '0.18em',
+        }}>
+          LIVO
+        </div>
+      </div>
+    )
+  }
+
   return (
     <Canvas
-      shadows
+      shadows={false}
       camera={{ position: [0, 4, 10], fov: 42 }}
       style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}
-      gl={{ alpha: true, antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.4 }}
+      gl={{
+        alpha: true,
+        antialias: false,
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 1.4,
+        powerPreference: 'low-power',
+      }}
     >
       <ambientLight intensity={0.3} />
-      <directionalLight position={[0, 8, 6]}  intensity={2.5} color="#ffffff" castShadow />
+      <directionalLight position={[0, 8, 6]}  intensity={2.5} color="#ffffff" />
       <directionalLight position={[6, 4, 2]}  intensity={1.2} color="#00E6FF" />
       <directionalLight position={[-6, 4, 2]} intensity={0.8} color="#7A3CFF" />
       <pointLight       position={[0, 6, 0]}  intensity={1.0} color="#00E6FF" distance={20} />

@@ -6,6 +6,7 @@
   padding: $section-padding;
   position: relative;
   overflow: hidden;
+  @include offscreen-section;
 }
 
 .bg {

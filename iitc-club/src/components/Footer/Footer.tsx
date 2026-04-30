@@ -26,7 +26,7 @@ export default function Footer() {
         <div className={styles.main}>
           <div className={styles.brand}>
             <Link href="#home" className={styles.logoWrap}>
-              <Image src="/logo.png" alt="LIVO Club" width={112} height={112} className={styles.logoImg} />
+              <Image src="/logo.png" alt="LIVO Club" width={112} height={112} className={styles.logoImg} loading="lazy" sizes="112px" />
               <div>
                 <div className={styles.logoName}>LIVO Club</div>
                 <div className={styles.logoSub}>Esports &amp; Sports</div>

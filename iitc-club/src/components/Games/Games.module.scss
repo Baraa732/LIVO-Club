@@ -46,6 +46,17 @@
   }
 }
 
+// Stack wrapper — all panels occupy the same grid cell, only active one is visible
+.panelStack {
+  position: relative;
+  // Height is driven by the active panel; inactive panels are position:absolute
+  // Use a min-height so the stack never collapses
+  min-height: 520px;
+
+  @include respond-to(md) { min-height: 480px; }
+  @include respond-to(sm) { min-height: 420px; }
+}
+
 .logoImg {
   width: 30px !important;
   height: 30px !important;
@@ -64,14 +75,23 @@
 
 .panel {
   @include cardBase;
-  position: relative;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   padding: 44px 44px 40px;
   display: flex;
   flex-direction: column;
   gap: 0;
-  animation: fadeUp 0.35s ease both;
   border-color: rgba(var(--accent, 0,230,255), .18);
+  // Hidden by default — shown only when data-active=true
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+
+  &[data-active='true'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
   @include respond-to(sm) { padding: 28px 24px; }
 }
@@ -142,7 +162,7 @@
   gap: 5px;
   font-size: 0.75rem;
   color: $text-dim;
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-weight: 600;
 }
 
@@ -222,7 +242,7 @@
 }
 
 .statVal {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--accent, $primary);
@@ -361,7 +381,7 @@
   align-items: center;
   gap: 4px;
   font-size: 0.72rem;
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-weight: 600;
   color: $text-dim;
 }

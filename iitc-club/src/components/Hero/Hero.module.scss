@@ -15,7 +15,7 @@
   }
 
   @include respond-to(sm) {
-    padding: 90px 0 50px;
+    padding: 125px 0 50px;
   }
 }
 
@@ -78,6 +78,11 @@
 
 .content {
   animation: fadeUp 0.8s ease both;
+  will-change: transform, opacity;
+
+  @include respond-to(sm) {
+    padding-top: 20px;
+  }
 }
 
 .liveDot {
@@ -205,7 +210,7 @@
 }
 
 .statNum {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 2.2rem;
   font-weight: 700;
   @include gradientText;
@@ -232,11 +237,11 @@
   }
 
   @include respond-to(md) {
-    height: 360px;
+    height: 380px;
   }
 
   @include respond-to(sm) {
-    height: 280px;
+    height: 340px;
   }
 }
 
@@ -244,6 +249,7 @@
   position: absolute;
   border-radius: 50%;
   border: 1px solid rgba(0,230,255,.12);
+  will-change: transform;
 }
 
 .orbitRing1 {
@@ -283,6 +289,7 @@
   border-radius: 50%;
   background: $primary;
   box-shadow: 0 0 12px $primary;
+  will-change: transform;
 }
 
 .orbitDot1 {

@@ -5,6 +5,7 @@
   padding: $section-padding;
   background: $bg-section;
   position: relative;
+  @include offscreen-section;
 
   &::before {
     content: '';
@@ -86,7 +87,7 @@
 }
 
 .topRank {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   @include gradientText;
@@ -129,27 +130,27 @@
 }
 
 .numCell {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 1rem;
   font-weight: 600;
 }
 
 .winCell {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: $success !important;
 }
 
 .lossCell {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: $danger !important;
 }
 
 .points {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   @include gradientText;

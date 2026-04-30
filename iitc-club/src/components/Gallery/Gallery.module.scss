@@ -3,6 +3,7 @@
 
 .section {
   padding: $section-padding;
+  @include offscreen-section;
 }
 
 .header {
@@ -74,7 +75,7 @@
 }
 
 .initial {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
   font-size: 4rem;
   font-weight: 700;
   color: rgba(255,255,255,.06);

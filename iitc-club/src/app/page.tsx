@@ -1,16 +1,18 @@
+import dynamic from 'next/dynamic'
 import Header from '@/components/Header/Header'
 import Hero from '@/components/Hero/Hero'
-import Games from '@/components/Games/Games'
-import About from '@/components/About/About'
-import Tournament from '@/components/Tournament/Tournament'
-import Events from '@/components/Events/Events'
-import Teams from '@/components/Teams/Teams'
-import Champions from '@/components/Champions/Champions'
-import Gallery from '@/components/Gallery/Gallery'
-import CTA from '@/components/CTA/CTA'
-import Rules from '@/components/Rules/Rules'
-import Contact from '@/components/Contact/Contact'
-import Footer from '@/components/Footer/Footer'
+import GamesShell from '@/components/Games/GamesShell'
+
+const About      = dynamic(() => import('@/components/About/About'))
+const Tournament = dynamic(() => import('@/components/Tournament/Tournament'))
+const Events     = dynamic(() => import('@/components/Events/Events'))
+const Teams      = dynamic(() => import('@/components/Teams/Teams'))
+const Champions  = dynamic(() => import('@/components/Champions/Champions'))
+const Gallery    = dynamic(() => import('@/components/Gallery/Gallery'))
+const CTA        = dynamic(() => import('@/components/CTA/CTA'))
+const Rules      = dynamic(() => import('@/components/Rules/Rules'))
+const Contact    = dynamic(() => import('@/components/Contact/Contact'))
+const Footer     = dynamic(() => import('@/components/Footer/Footer'))
 
 export default function Home() {
   return (
@@ -21,7 +23,7 @@ export default function Home() {
         <Hero />
 
         {/* #games */}
-        <Games />
+        <GamesShell />
 
         {/* #about */}
         <About />

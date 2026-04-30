@@ -9,6 +9,7 @@
   padding: $section-padding;
   background: $bg-section;
   position: relative;
+  @include offscreen-section;
 
   &::before {
     content: '';
@@ -96,7 +97,7 @@
 }
 
 .metaValue {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 1.05rem;
   font-weight: 700;
   @include gradientText;
@@ -284,7 +285,7 @@
 }
 
 .teamScore {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
   color: $text-dim;
@@ -374,7 +375,7 @@
 }
 
 .rankNum {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: $text-dim;
@@ -388,12 +389,12 @@
   color: $text;
 }
 
-.numCell  { font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 600; }
-.winCell  { font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; color: $success !important; }
-.lossCell { font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; color: $danger  !important; }
+.numCell  { font-family: var(--font-rajdhani), sans-serif; font-size: 1rem; font-weight: 600; }
+.winCell  { font-family: var(--font-rajdhani), sans-serif; font-size: 1rem; font-weight: 700; color: $success !important; }
+.lossCell { font-family: var(--font-rajdhani), sans-serif; font-size: 1rem; font-weight: 700; color: $danger  !important; }
 
 .ptsValue {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   @include gradientText;
@@ -443,7 +444,7 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  font-family: 'Rajdhani', sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 2rem;
   font-weight: 700;
   color: rgba(0,230,255,.06);

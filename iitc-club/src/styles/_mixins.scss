@@ -81,3 +81,9 @@
   @else if $bp == md { @media (max-width: $bp-md) { @content; } }
   @else if $bp == sm { @media (max-width: $bp-sm) { @content; } }
 }
+
+// CSS containment for off-screen sections — skips layout/paint for invisible content
+@mixin offscreen-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px;
+}

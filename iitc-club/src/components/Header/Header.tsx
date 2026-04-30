@@ -161,7 +161,7 @@ export default function Header() {
 
           {/* Logo */}
           <button className={styles.logo} onClick={handleLogoClick} aria-label="Go to home">
-            <Image src="/logo.png" alt="LIVO Club" width={120} height={120} priority className={styles.logoImg} />
+            <Image src="/logo.png" alt="LIVO Club" width={120} height={120} priority className={styles.logoImg} sizes="120px" />
             <div className={styles.logoText}>
               <span className={styles.logoName}>LIVO <span>Club</span></span>
               <span className={styles.logoSub}>Esports &amp; Sports</span>
@@ -215,7 +215,7 @@ export default function Header() {
       >
         <div className={styles.drawerHeader}>
           <button className={styles.logo} onClick={handleLogoClick} aria-label="Go to home">
-            <Image src="/logo.png" alt="LIVO Club" width={88} height={88} className={styles.logoImg} />
+            <Image src="/logo.png" alt="LIVO Club" width={88} height={88} className={styles.logoImg} sizes="88px" loading="lazy" />
             <div className={styles.logoText}>
               <span className={styles.logoName}>LIVO <span>Club</span></span>
             </div>

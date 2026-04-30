@@ -6,6 +6,7 @@
   padding: $section-padding;
   background: $bg-section;
   position: relative;
+  @include offscreen-section;
 
   &::before {
     content: '';
@@ -75,7 +76,7 @@
 }
 
 .avatarInitial {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
   font-size: 2rem;
   font-weight: 700;
   color: $text;
