@@ -1,7 +1,7 @@
 'use client'
 import { Suspense, useRef, useEffect, useMemo, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useGLTF, Environment } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
 useGLTF.preload('/models/LIVO.glb')
@@ -66,14 +66,18 @@ function RadarGrid() {
   }, [])
 
   const mat = useMemo(() => new THREE.MeshBasicMaterial({ color: '#00E6FF', transparent: true, opacity: 0.13, side: THREE.DoubleSide }), [])
-  const lineMat = useMemo(() => new THREE.LineBasicMaterial({ color: '#00E6FF', transparent: true, opacity: 0.1 }), [])
 
   useFrame((_, delta) => { if (ref.current) ref.current.rotation.z += delta * 0.18 })
 
   return (
     <group ref={ref} rotation={[-Math.PI / 2, 0, 0]} position={[0, -2.2, 0]}>
       {rings.map((geo, i) => <mesh key={i} geometry={geo} material={mat} />)}
-      {lines.map((geo, i) => <primitive key={i} object={new THREE.Line(geo, lineMat)} />)}
+      {lines.map((geo, i) => (
+        <line key={i}>
+          <bufferGeometry attach="geometry" {...geo} />
+          <lineBasicMaterial attach="material" color="#00E6FF" transparent opacity={0.1} />
+        </line>
+      ))}
     </group>
   )
 }
@@ -175,29 +179,19 @@ function Model({ onReady }: { onReady: () => void }) {
 export default function LivoModel() {
   const [modelReady, setModelReady] = useState(false)
 
-  // On mobile/low-end: skip WebGL, show only CSS fallback forever
-  const isLowEnd = typeof window !== 'undefined' && (
-    /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
-    (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 4) ||
-    window.innerWidth < 768
-  )
-
-  if (isLowEnd) {
-    return <TextFallback hidden={false} />
-  }
-
   return (
     <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
-      {/* CSS text shows instantly, fades out when 3D is ready */}
+
+      {/* CSS text — shows instantly, fades out when 3D is ready */}
       <TextFallback hidden={modelReady} />
 
-      {/* 3D Canvas loads in background, fades in when ready */}
+      {/* 3D Canvas — invisible until model is positioned and ready */}
       <Canvas
         shadows={false}
         camera={{ position: [0, 4, 10], fov: 42 }}
         style={{
           width: '100%', height: '100%', position: 'absolute', inset: 0,
-          transition: 'opacity 0.6s ease',
+          transition: 'opacity 0.8s ease',
           opacity: modelReady ? 1 : 0,
         }}
         gl={{
@@ -205,7 +199,6 @@ export default function LivoModel() {
           antialias: false,
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.4,
-          powerPreference: 'low-power',
         }}
       >
         <ambientLight intensity={0.3} />
@@ -216,7 +209,6 @@ export default function LivoModel() {
         <Suspense fallback={null}>
           <Model onReady={() => setModelReady(true)} />
           <RadarGrid />
-          <Environment preset="night" />
         </Suspense>
       </Canvas>
     </div>
