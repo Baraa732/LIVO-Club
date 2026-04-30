@@ -56,15 +56,15 @@ export const BRACKET: Round[] = [
     id: 'sf',
     label: 'Semi Finals',
     matches: [
-      { id: 'sf1', team1: 'Alpha Squad', team2: 'TBD', score1: null, score2: null, status: 'upcoming', time: 'Feb 20' },
-      { id: 'sf2', team1: 'TBD',         team2: 'TBD', score1: null, score2: null, status: 'upcoming', time: 'Feb 20' },
+      { id: 'sf1', team1: 'Alpha Squad', team2: 'Storm Riders', score1: null, score2: null, status: 'upcoming', time: 'Feb 20' },
+      { id: 'sf2', team1: '??',         team2: '??', score1: null, score2: null, status: 'upcoming', time: 'Feb 20' },
     ],
   },
   {
     id: 'gf',
     label: 'Grand Final',
     matches: [
-      { id: 'gf1', team1: 'TBD', team2: 'TBD', score1: null, score2: null, status: 'upcoming', time: 'Feb 25' },
+      { id: 'gf1', team1: '??', team2: '??', score1: null, score2: null, status: 'upcoming', time: 'Feb 25' },
     ],
   },
 ]
