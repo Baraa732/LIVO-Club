@@ -161,7 +161,7 @@ export default function Games() {
           >
             <div className={styles.listLeft}>
               <span className={styles.listEmoji}>
-                <Image src={g.emoji} alt={g.name} width={30} height={30} className={styles.logoImg} loading="lazy" />
+                <Image src={g.emoji} alt={g.name} width={30} height={30} className={styles.logoImg} priority loading="eager" />
               </span>
               <div className={styles.listInfo}>
                 <span className={styles.listName}>{g.name}</span>
