@@ -15,7 +15,7 @@ export default function Champions() {
   return (
     <section className={styles.section} id="champions">
       <div className="container">
-        <div className={styles.header}>
+        <div className={styles.header} >
           <div className="section-badge">
             <Crown size={13} /> Hall of Fame
           </div>

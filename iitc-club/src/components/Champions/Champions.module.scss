@@ -1,19 +1,27 @@
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
-@use '../../styles/animations';
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/animations";
 
 .section {
+  
   padding: $section-padding;
   background: $bg-section;
   position: relative;
   @include offscreen-section;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0; left: 0; right: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,230,255,.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 230, 255, 0.2),
+      transparent
+    );
   }
 }
 
@@ -28,6 +36,7 @@
 }
 
 .sub {
+  
   color: $text-soft;
   font-size: 0.95rem;
 }
@@ -37,11 +46,16 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 
-  @include respond-to(lg) { grid-template-columns: repeat(2, 1fr); }
-  @include respond-to(sm) { grid-template-columns: 1fr; }
+  @include respond-to(lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include respond-to(sm) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {
+
   @include cardBase;
   padding: 32px 24px;
   text-align: center;
@@ -49,10 +63,13 @@
   overflow: hidden;
   @include hoverLift;
 
-  &:hover .glowLine { opacity: 1; }
+  &:hover .glowLine {
+    opacity: 1;
+  }
 }
 
 .rankBadge {
+  
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -65,6 +82,7 @@
 }
 
 .avatar {
+  
   position: relative;
   width: 80px;
   height: 80px;
@@ -72,7 +90,7 @@
   border: 2px solid;
   margin: 0 auto 20px;
   @include flex-center;
-  background: rgba(255,255,255,.04);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .avatarInitial {
@@ -90,7 +108,8 @@
   font-size: 1.2rem;
 }
 
-.info {}
+.info {
+}
 
 .name {
   font-size: 1.05rem;
@@ -113,23 +132,26 @@
 }
 
 .game {
+  
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   padding: 3px 10px;
   border-radius: 100px;
-  background: rgba(0,230,255,.06);
-  border: 1px solid rgba(0,230,255,.12);
+  background: rgba(0, 230, 255, 0.06);
+  border: 1px solid rgba(0, 230, 255, 0.12);
   color: $primary;
 }
 
 .season {
+  
   font-size: 0.72rem;
   color: $text-dim;
 }
 
 .glowLine {
+  
   position: absolute;
   bottom: 0;
   left: 0;

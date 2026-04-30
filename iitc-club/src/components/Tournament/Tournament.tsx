@@ -38,23 +38,23 @@ export default function Tournament() {
               <p className={styles.subtitle}>{TOURNAMENT_META.season}</p>
             </div>
 
-            <div className={styles.metaCards}>
-              <div className={styles.metaCard}>
+            <div  className={styles.metaCards}>
+              <div  className={styles.metaCard}>
                 <Trophy size={16} className={styles.metaIcon} />
                 <span className={styles.metaLabel}>Prize Pool</span>
                 <span className={styles.metaValue}>{TOURNAMENT_META.prizePool}</span>
               </div>
-              <div className={styles.metaCard}>
+              <div  className={styles.metaCard}>
                 <Users size={16} className={styles.metaIcon} />
                 <span className={styles.metaLabel}>Teams</span>
                 <span className={styles.metaValue}>{TOURNAMENT_META.teams}</span>
               </div>
-              <div className={styles.metaCard}>
+              <div  className={styles.metaCard}>
                 <Shield size={16} className={styles.metaIcon} />
                 <span className={styles.metaLabel}>Format</span>
                 <span className={styles.metaValue}>{TOURNAMENT_META.format}</span>
               </div>
-              <div className={styles.metaCard}>
+              <div  className={styles.metaCard}>
                 <Calendar size={16} className={styles.metaIcon} />
                 <span className={styles.metaLabel}>Starts</span>
                 <span className={styles.metaValue}>{TOURNAMENT_META.startDate}</span>
@@ -62,7 +62,7 @@ export default function Tournament() {
             </div>
           </div>
 
-          <div className={styles.tabBar}>
+          <div  className={styles.tabBar}>
             {TABS.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
@@ -77,7 +77,7 @@ export default function Tournament() {
         </div>
 
         {/* ── Tab Content ── */}
-        <div className={styles.content}>
+        <div  className={styles.content}>
           {activeTab === 'overview'  && <BracketView   rounds={BRACKET}    />}
           {activeTab === 'standings' && <StandingsView entries={STANDINGS}  />}
           {activeTab === 'rules'     && <RulesView     rules={RULES}        />}

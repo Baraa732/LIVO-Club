@@ -10,7 +10,7 @@ const STATUS_LABEL: Record<TeamEntry['status'], string> = {
 
 export default function StandingsView({ entries }: { entries: TeamEntry[] }) {
   return (
-    <div className={styles.standingsWrap}>
+    <div  className={styles.standingsWrap}>
       <table className={styles.standingsTable}>
         <thead>
           <tr>
