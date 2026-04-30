@@ -1,14 +1,17 @@
 'use client'
-import { useRef, useLayoutEffect, useState, useCallback } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import styles from './Tournament.module.scss'
 import type { Round, Match } from './data'
 
-function MatchCard({ match, refProp }: { match: Match; refProp?: React.Ref<HTMLDivElement> }) {
+function MatchCard({ match, ri, mi }: { match: Match; ri: number; mi: number }) {
   const isWinner1 = match.status === 'done' && match.score1! > match.score2!
   const isWinner2 = match.status === 'done' && match.score2! > match.score1!
 
   return (
-    <div ref={refProp} className={`${styles.matchCard} ${styles[`match_${match.status}`]}`}>
+    <div
+      data-card={`${ri}-${mi}`}
+      className={`${styles.matchCard} ${styles[`match_${match.status}`]}`}
+    >
       {match.status === 'live' && (
         <div className={styles.liveBar}>
           <span className={styles.liveDot} /> LIVE
@@ -40,80 +43,119 @@ interface ConnectorPath { d: string; done: boolean }
 
 export default function BracketView({ rounds }: { rounds: Round[] }) {
   const bracketRef = useRef<HTMLDivElement>(null)
-  const cardRefs = useRef<(HTMLDivElement | null)[][]>(rounds.map(r => r.matches.map(() => null)))
   const [paths, setPaths] = useState<ConnectorPath[]>([])
+  const rafRef = useRef<number>(0)
 
   const computePaths = useCallback(() => {
-    const container = bracketRef.current
-    if (!container) return
-    const base = container.getBoundingClientRect()
-    const newPaths: ConnectorPath[] = []
+    cancelAnimationFrame(rafRef.current)
+    rafRef.current = requestAnimationFrame(() => {
+      const container = bracketRef.current
+      if (!container) return
 
-    for (let r = 0; r < rounds.length - 1; r++) {
-      const srcRound = rounds[r]
-      const dstRound = rounds[r + 1]
-      for (let d = 0; d < dstRound.matches.length; d++) {
-        const src1El = cardRefs.current[r]?.[d * 2]
-        const src2El = cardRefs.current[r]?.[d * 2 + 1]
-        const dstEl  = cardRefs.current[r + 1]?.[d]
-        if (!src1El || !src2El || !dstEl) continue
+      const base = container.getBoundingClientRect()
 
-        const r1 = src1El.getBoundingClientRect()
-        const r2 = src2El.getBoundingClientRect()
-        const rd = dstEl.getBoundingClientRect()
+      // Query all cards and columns directly from the DOM
+      const getCard = (ri: number, mi: number) =>
+        container.querySelector<HTMLElement>(`[data-card="${ri}-${mi}"]`)
+      const getCol = (ri: number) =>
+        container.querySelector<HTMLElement>(`[data-col="${ri}"]`)
 
-        const x1 = r1.right - base.left,  y1 = r1.top + r1.height / 2 - base.top
-        const x2 = r2.right - base.left,  y2 = r2.top + r2.height / 2 - base.top
-        const xd = rd.left  - base.left,  yd = rd.top + rd.height / 2 - base.top
-        const mx = x1 + (xd - x1) * 0.5
-        const my = (y1 + y2) / 2
-        const isDone = srcRound.matches[d * 2]?.status === 'done' || srcRound.matches[d * 2 + 1]?.status === 'done'
+      const newPaths: ConnectorPath[] = []
 
-        newPaths.push({ d: `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${my}, ${mx} ${my}`, done: isDone })
-        newPaths.push({ d: `M ${x2} ${y2} C ${mx} ${y2}, ${mx} ${my}, ${mx} ${my}`, done: isDone })
-        newPaths.push({ d: `M ${mx} ${my} C ${mx} ${my}, ${mx} ${yd}, ${xd} ${yd}`, done: isDone })
+      for (let r = 0; r < rounds.length - 1; r++) {
+        const srcRound = rounds[r]
+        const dstRound = rounds[r + 1]
+
+        const srcCol = getCol(r)
+        const dstCol = getCol(r + 1)
+        if (!srcCol || !dstCol) continue
+
+        // xMid = true center of the gap between the two columns
+        const xMid =
+          (srcCol.getBoundingClientRect().right +
+            dstCol.getBoundingClientRect().left) /
+            2 -
+          base.left
+
+        for (let d = 0; d < dstRound.matches.length; d++) {
+          const topEl = getCard(r, d * 2)
+          const botEl = getCard(r, d * 2 + 1)
+          const dstEl = getCard(r + 1, d)
+          if (!topEl || !botEl || !dstEl) continue
+
+          const rTop = topEl.getBoundingClientRect()
+          const rBot = botEl.getBoundingClientRect()
+          const rDst = dstEl.getBoundingClientRect()
+
+          const x1   = rTop.right - base.left
+          const y1   = rTop.top   + rTop.height / 2 - base.top
+          const x2   = rBot.right - base.left
+          const y2   = rBot.top   + rBot.height / 2 - base.top
+          const xDst = rDst.left  - base.left
+          const yDst = rDst.top   + rDst.height / 2 - base.top
+          const yMid = (y1 + y2) / 2
+
+          const isDone =
+            srcRound.matches[d * 2]?.status === 'done' &&
+            srcRound.matches[d * 2 + 1]?.status === 'done'
+
+          newPaths.push({ d: `M ${x1} ${y1} H ${xMid} V ${yMid}`, done: isDone })
+          newPaths.push({ d: `M ${x2} ${y2} H ${xMid} V ${yMid}`, done: isDone })
+          newPaths.push({ d: `M ${xMid} ${yMid} H ${xDst}`,       done: isDone })
+        }
       }
-    }
-    setPaths(newPaths)
+
+      setPaths(newPaths)
+    })
   }, [rounds])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     computePaths()
     window.addEventListener('resize', computePaths)
-    return () => window.removeEventListener('resize', computePaths)
+    return () => {
+      window.removeEventListener('resize', computePaths)
+      cancelAnimationFrame(rafRef.current)
+    }
   }, [computePaths])
 
   return (
     <div ref={bracketRef} className={styles.bracket}>
       <svg className={styles.connectorSvg} aria-hidden>
         <defs>
-          <linearGradient id="neon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id="neon-gradient" x1="0%" y1="30%" x2="60%" y2="90%">
             <stop offset="0%"   stopColor="#8689e6" />
-            <stop offset="33%"  stopColor="#a2d1ff" />
-            <stop offset="66%"  stopColor="#5efbcc" />
-            <stop offset="100%" stopColor="#eb9779" />
+            <stop offset="40%"  stopColor="#a2d1ff" />
+            <stop offset="90%"  stopColor="#5efbcc" />
+            <stop offset="99%" stopColor="#eb9779" />
           </linearGradient>
-          <filter id="neon-glow-done">
-            <feGaussianBlur stdDeviation="3.5" result="blur" />
-            <feMerge><feMergeNode in="blur" /><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
+            <feGaussianBlur stdDeviation="4.5" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
         </defs>
         {paths.map((p, i) => (
-          <g key={i}>
-            <path d={p.d} fill="none" stroke="url(#neon-gradient)" strokeWidth={3} filter="url(#neon-glow-done)" strokeLinecap="round" />
-            <path d={p.d} fill="none" stroke="url(#neon-gradient)" strokeWidth={3} strokeLinecap="round" />
-          </g>
+          <path
+            key={i}
+            d={p.d}
+            fill="none"
+            stroke="url(#neon-gradient)"
+            strokeWidth={1.7}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            filter={p.done ? 'url(#neon-glow)' : undefined}
+          />
         ))}
       </svg>
+
       {rounds.map((round, roundIdx) => (
-        <div key={round.id} className={styles.bracketCol}>
+        <div key={round.id} data-col={roundIdx} className={styles.bracketCol}>
           <div className={styles.roundHeader}>
             <span className={styles.roundLabel}>{round.label}</span>
             <span className={styles.roundCount}>{round.matches.length} matches</span>
           </div>
           <div className={styles.matchList}>
             {round.matches.map((match, matchIdx) => (
-              <MatchCard key={match.id} match={match} refProp={el => { cardRefs.current[roundIdx][matchIdx] = el }} />
+              <MatchCard key={match.id} match={match} ri={roundIdx} mi={matchIdx} />
             ))}
           </div>
         </div>
